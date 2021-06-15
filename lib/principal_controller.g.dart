@@ -27,13 +27,13 @@ mixin _$PrincipalController on PrincipalControllerBase, Store {
   final _$listaItensAtom = Atom(name: 'PrincipalControllerBase.listaItens');
 
   @override
-  ObservableList<String> get listaItens {
+  ObservableList<ItemController> get listaItens {
     _$listaItensAtom.reportRead();
     return super.listaItens;
   }
 
   @override
-  set listaItens(ObservableList<String> value) {
+  set listaItens(ObservableList<ItemController> value) {
     _$listaItensAtom.reportWrite(value, super.listaItens, () {
       super.listaItens = value;
     });
