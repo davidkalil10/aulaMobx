@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mobx_aula/controller.dart';
 import 'package:mobx_aula/principal.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -10,7 +11,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Controller controller = Controller();
+ // Controller controller = Controller();
+  late Controller controller;
   late ReactionDisposer reactionDisposer;
 
   @override
@@ -19,6 +21,8 @@ class _HomeState extends State<Home> {
 /*    autorun((_){
       print(controller.formularioValidado);
     });*/
+
+    controller = Provider.of<Controller>(context);
 
     reactionDisposer =
         reaction((_) => controller.usuarioLogado, (valorController) {

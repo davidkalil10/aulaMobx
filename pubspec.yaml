@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   mobx: ^2.0.1 #core da biblioteca
   flutter_mobx: ^2.0.0 #plugin para widget observer
+  provider: ^5.0.0
 
 
 dev_dependencies:
