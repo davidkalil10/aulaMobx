@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:mobx_aula/controller.dart';
 
 class Home extends StatefulWidget {
@@ -8,8 +9,27 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Controller controller = Controller();
+  late ReactionDisposer reactionDisposer;
 
- Controller controller = Controller();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+/*    autorun((_){
+      print(controller.formularioValidado);
+    });*/
+
+    reactionDisposer =
+        reaction((_) => controller.usuarioLogado, (valorController) {
+      print(valorController);
+    });
+  }
+
+  @override
+  void dispose() {
+    reactionDisposer();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +38,7 @@ class _HomeState extends State<Home> {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            Padding(
+            /* Padding(
               padding: EdgeInsets.all(16),
               child: Observer(
                 builder: (_){
@@ -30,16 +50,50 @@ class _HomeState extends State<Home> {
                   );
                 },
               ),
+            ),*/
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: TextField(
+                decoration: InputDecoration(labelText: "Email"),
+                onChanged: controller.setEmail,
+              ),
             ),
             Padding(
               padding: EdgeInsets.all(16),
-              child: ElevatedButton(
-                child: Text(
-                  "Incrementar",
-                  style: TextStyle(color: Colors.black, fontSize: 40),
-                ),
-                onPressed: (){
-                  controller.incrementar();
+              child: TextField(
+                decoration: InputDecoration(labelText: "Senha"),
+                onChanged: controller.setSenha,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Observer(
+                builder: (_) {
+                  return Text(controller.formularioValidado
+                      ? "Validados"
+                      : "* Campos não validados");
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Observer(
+                builder: (_) {
+                  return ElevatedButton(
+                    child: controller.carregando
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(Colors.white),
+                          )
+                        : Text(
+                            "Logar",
+                            style: TextStyle(color: Colors.black, fontSize: 30),
+                          ),
+                    onPressed: controller.formularioValidado
+                        ? () {
+                            controller.logar();
+                          }
+                        : null,
+                  );
                 },
               ),
             ),
